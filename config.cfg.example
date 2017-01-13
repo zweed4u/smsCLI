@@ -2,7 +2,7 @@
 
 [automated]
 needed = #True or False for automated message
-time = #Time for when automated message will be sent eg (10:30PM, 04:32PM, etc.)
+time = #Time for when automated message will be sent eg (10:30PM, 04:32PM, 12:01AM, etc.)
 
 [install]
 debNeeded = #True or False for deb installation
