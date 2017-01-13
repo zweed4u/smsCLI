@@ -81,7 +81,7 @@ print 'Ensure that "Use Authentication" is disabled'
 print 'Ensure that the server port is: 333'
 print
 raw_input('Confirm the above is True...')
-
+print
 hashId='SMS;-;+'+user_config.number #'SMS' or 'iMessage'(self) prepended
 
 params={
@@ -109,9 +109,13 @@ def automatedTimeMessage(time):
 			print 'Background conditional thread hit!'
 
 if user_config.automationNeeded.lower() == 'true':
+	print 'Automated messaging set!'
+	print 'Messaging '+user_config.number+' at '+user_config.automatedTime
 	automatedThread = threading.Thread(target=automatedTimeMessage, args=(user_config.automatedTime,))
 	automatedThread.daemon = True
 	automatedThread.start()
+else:
+	print 'Automated messaging disabled!'
 print
 print 'Messaging '+user_config.number
 session=requests.session()
