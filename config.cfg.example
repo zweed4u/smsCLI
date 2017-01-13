@@ -1,0 +1,18 @@
+# Modify this file and save it as config.cfg
+
+[automated]
+needed = #True or False for automated message
+time = #Time for when automated message will be sent eg (10:30PM, 04:32PM, etc.)
+
+[install]
+debNeeded = #True or False for deb installation
+
+[device]
+udid = #get this value from itunes by clicking on serial number/model identifier/ecid
+
+[number]
+number = #12345678900 (include '1' at beginning)
+
+[ssh]
+ip = #192.168.0.1 (phone ip address)
+password = #alpine (default) ssh loopback password for login
