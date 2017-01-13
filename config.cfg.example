@@ -14,5 +14,5 @@ udid = #get this value from itunes by clicking on serial number/model identifier
 number = #12345678900 (include '1' at beginning)
 
 [ssh]
-ip = #192.168.0.1 (phone ip address)
+ip = #192.168.0.1 (phone ip address) Preferences > Wi-Fi > (i) > IP Address
 password = #alpine (default) ssh loopback password for login
