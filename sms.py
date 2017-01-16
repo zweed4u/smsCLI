@@ -1,9 +1,7 @@
 #!/usr/bin/python
 #add escape message where if certain text detected - command ie. change recipient and prompt user of change
 #add emojis and media
-#implement better threading - while in raw_input automated time not picked up
-#flag toggle for sending only one automated message
-#implement another threading function for midnight detect for toggling flag to reset on non-duplications
+#flag toggle for sending only one automated message - sms bomb flag in config add conditional to see if no dup flag needed
 #exception handling needed in post requests.exceptions.ConnectionError: ('Connection aborted.', BadStatusLine("''",))
 #...paramiko.ssh_exception.NoValidConnectionsError  - ensure that devices ip address is correct
 import os, sys, time, datetime, requests, threading, paramiko, ConfigParser
@@ -91,12 +89,12 @@ params={
 	'_':str(int(time.time()*1000))
 }
 
-#flag=0   only send message once
-#midnight checker toggle flag on midnoght detect conditional
+messageSent=0   #only send message once - midnight checker toggle flag on midnoght detect conditional
 
-def automatedTimeMessage(time):
+def automatedTimeMessage(time, noDupMessage):
+	global messageSent
 	while 1: #and if flag = 0
-		if datetime.datetime.now().strftime("%I:%M%p") == time:
+		if datetime.datetime.now().strftime("%I:%M%p") == time and noDupMessage==0:
 			message=str(datetime.datetime.now())+': Testing automated message. Should send at '+time+'!'
 			files={
 				'hashid': (None, hashId), 
@@ -106,14 +104,26 @@ def automatedTimeMessage(time):
 				'text': (None, message)
 			}
 			session.post('http://'+user_config.ip+':333/sendMessage.srv',files=files)
+			messageSent=1
 			print 'Background conditional thread hit!'
+
+def becauseItsMidnight():
+	global messageSent
+	while 1:
+		if datetime.datetime.now().strftime("%I:%M%p") == "12:00AM":
+			messageSent=0
+		#maybe overkill - use sleep
+		time.sleep(30)
 
 if user_config.automationNeeded.lower() == 'true':
 	print 'Automated messaging set!'
 	print 'Messaging '+user_config.number+' at '+user_config.automatedTime
-	automatedThread = threading.Thread(target=automatedTimeMessage, args=(user_config.automatedTime,))
-	automatedThread.daemon = True
-	automatedThread.start()
+	automatedMessageThread = threading.Thread(target=automatedTimeMessage, args=(user_config.automatedTime,messageSent,))
+	automatedMessageThread.daemon = True
+	automatedMessageThread.start()
+	newDayDetectonResetFlag = threading.Thread(target=becauseItsMidnight, args=(,))
+	newDayDetectonResetFlag.daemon = True
+	newDayDetectonResetFlag.start()
 else:
 	print 'Automated messaging disabled!'
 print
