@@ -105,6 +105,7 @@ def automatedTimeMessage(time, noDupMessage):
 			}
 			session.post('http://'+user_config.ip+':333/sendMessage.srv',files=files)
 			messageSent=1
+			noDupMessage=1
 			print 'Background conditional thread hit!'
 
 def becauseItsMidnight():
@@ -112,6 +113,7 @@ def becauseItsMidnight():
 	while 1:
 		if datetime.datetime.now().strftime("%I:%M%p") == "12:00AM":
 			messageSent=0
+			noDupMessage=0
 		#maybe overkill - use sleep
 		time.sleep(30)
 
@@ -121,7 +123,7 @@ if user_config.automationNeeded.lower() == 'true':
 	automatedMessageThread = threading.Thread(target=automatedTimeMessage, args=(user_config.automatedTime,messageSent,))
 	automatedMessageThread.daemon = True
 	automatedMessageThread.start()
-	newDayDetectonResetFlag = threading.Thread(target=becauseItsMidnight, args=(,))
+	newDayDetectonResetFlag = threading.Thread(target=becauseItsMidnight)
 	newDayDetectonResetFlag.daemon = True
 	newDayDetectonResetFlag.start()
 else:
