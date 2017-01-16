@@ -112,6 +112,7 @@ def becauseItsMidnight():
 	global messageSent
 	while 1:
 		if datetime.datetime.now().strftime("%I:%M%p") == "12:00AM":
+			print 'Rollover date detected! Resetting flags...'
 			messageSent=0
 			noDupMessage=0
 		#maybe overkill - use sleep
