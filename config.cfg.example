@@ -7,6 +7,11 @@ time = #Time for when automated message will be sent eg (10:30PM, 04:32PM, 12:01
 [install]
 debNeeded = #True or False for deb installation
 
+[authentication]
+authNeeded = #True to enable and need for credentials
+username = #johnDoe
+pass = #password123
+
 [device]
 udid = #get this value from itunes by clicking on serial number/model identifier/ecid
 
